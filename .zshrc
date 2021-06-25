@@ -2,6 +2,7 @@
 
 alias be='bundle exec'
 alias k='kubectl'
+alias ll='ls -l'
 
 export LANG=ja_JP.UTF-8
 
