@@ -4,6 +4,6 @@ ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vsliveshare.vsliveshare
-tht13.html-preview-vsocde
+tht13.html-preview-vscode
 zxh404.vscode-proto3
 HashiCorp.terraform

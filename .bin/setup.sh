@@ -18,19 +18,19 @@ function install_package() {
   local dotdir=$(dirname ${script_dir})
 
   brew doctor
-  brew bundle --global --verbose --file "$dotdir/.vscode/.Brewfile"
+  brew bundle --verbose --file "$dotdir/.Brewfile"
 }
 
 function setup_vscode() {
   local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
   local dotdir=$(dirname ${script_dir})
-  local target_dir="$HOME/Library/Application\ Support/Code/User"
+  local target_dir="$HOME/Library/Application Support/Code/User"
 
-  for EXTENSION in `cat $dotdir/.vscode/extensions.txt`; do
+  for EXTENSION in `cat $dotdir/Code/extensions.txt`; do
     code --install-extension $EXTENSION
   done
 
-  local src_list=$(find . -mindepth 3 -type f | grep .vscode | sed -e 's/.\///')
+  local src_list=$(find . -mindepth 3 -type f | grep -v .git | grep Code | sed -e 's/.\///')
 
   for src in $src_list; do
     src_fullpath="$dotdir/$src"
@@ -74,6 +74,7 @@ function main() {
       --help|-h)
         helpmsg
         exit 1
+        ;;
       --brew)
         ;;
       install)
@@ -87,6 +88,7 @@ function main() {
 
   if [[ "$IS_INSTALL" = true ]];then
     install_package
+    setup_vscode
     link_to_homedir
     command echo ""
     command echo "#####################################################"
