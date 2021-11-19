@@ -11,3 +11,10 @@ set backspace=indent,eol,start
 syntax on
 colorscheme desert
 inoremap <silent> jj <ESC>
+
+if has("autocmd")
+  filetype plugin on
+  filetype indent on
+
+  autocmd FileType go setlocal shiftwidth=8 tabstop=8 softtabstop=8 noet
+endif
