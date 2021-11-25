@@ -16,6 +16,7 @@
 !/.Brwfile
 !/.zprofile
 !/.zshrc
+!/foo.tx
 
 !/.gitkeep
 !/.gitignore
