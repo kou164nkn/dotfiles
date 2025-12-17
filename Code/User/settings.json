@@ -68,5 +68,7 @@
 	"[makefile]": {
 		"editor.tabSize": 8,
 		"editor.insertSpaces": false
-	}
+	},
+
+	"terminal.integrated.enableMultiLinePasteWarning": "never"
 }
