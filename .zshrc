@@ -8,16 +8,16 @@ else
     alias ls='ls --color=auto'
 fi
 
+eval "$(fzf --zsh)"
 
-# === environment vars ====================================
+# === Environment Variables ===============================
 
 export LANG=ja_JP.UTF-8
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+
 export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
-
-# === alias ===============================================
+# === Alias ===============================================
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -27,6 +27,3 @@ alias k='kubectl'
 alias kg='kubectl get'
 alias kd='kubectl describe'
 alias ll='ls -alF'
-
-
-eval "$(pyenv init -)"
