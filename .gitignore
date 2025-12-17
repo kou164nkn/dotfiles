@@ -5,8 +5,9 @@
 /.**
 
 ### not ignore ###
-!/.bin/
-!/.bin/setup.sh
+!/bin/
+!/bin/setup.sh
+!/com\.googlecode\.iterm2.plist
 !/Code/
 !/Code/extensions.txt
 !/Code/User/
