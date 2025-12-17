@@ -5,15 +5,14 @@
 /.**
 
 ### not ignore ###
-!/.bin/
-!/.bin/setup.sh
+!/bin/
+!/bin/setup.sh
+!/Brewfile
+!/com\.googlecode\.iterm2.plist
 !/Code/
 !/Code/extensions.txt
 !/Code/User/
 !/Code/User/settings.json
-!/.bash_profile
-!/.bashrc
-!/.Brwfile
 !/.zprofile
 !/.zshrc
 
