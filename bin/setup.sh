@@ -18,7 +18,7 @@ function install_package() {
   local dotdir=$(dirname ${script_dir})
 
   brew doctor
-  brew bundle --verbose --file "$dotdir/.Brewfile"
+  brew bundle --verbose --file "$dotdir/Brewfile"
 
   command echo "Package installed"
 }
@@ -52,15 +52,18 @@ function link_to_homedir() {
   local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
   local dotdir=$(dirname ${script_dir})
   if [[ "$HOME" != "$dotdir" ]];then
-    for f in $dotdir/.??*; do
-      [[ `basename $f` == ".git" ]] && continue
-      if [[ -L "$HOME/`basename $f`" ]];then
-        command rm -f "$HOME/`basename $f`"
+    for f in "$dotdir"/.??*; do
+      local base_name
+      base_name=$(basename "$f")
+      [[ "$base_name" == .git* || "$base_name" == ".DS_Store" ]] && continue
+
+      local target="$HOME/$base_name"
+      if [[ -L "$target" ]];then
+        command rm -f "$target"
+      elif [[ -e "$target" ]];then
+        command mv "$target" "$HOME/.dotbackup"
       fi
-      if [[ -e "$HOME/`basename $f`" ]];then
-        command mv "$HOME/`basename $f`" "$HOME/.dotbackup"
-      fi
-      command ln -snf $f $HOME
+      command ln -snf "$f" "$target"
     done
     command echo "Symbolic link created"
   else
