@@ -6,6 +6,7 @@ function helpmsg() {
   command echo "install: install homebrew package and add symbolic link to $HOME from dotfiles [default]"
 }
 
+
 function install_package() {
   if ! (type brew > /dev/null 2>&1); then
     xcode-select --install
@@ -22,6 +23,7 @@ function install_package() {
 
   command echo "Package installed"
 }
+
 
 function setup_vscode() {
   local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
@@ -42,6 +44,7 @@ function setup_vscode() {
   command echo "VSCode settings updated"
 }
 
+
 function link_to_homedir() {
   command echo "backup old dotfiles..."
   if [ ! -d "$HOME/.dotbackup" ];then
@@ -49,27 +52,61 @@ function link_to_homedir() {
     command mkdir "$HOME/.dotbackup"
   fi
 
-  local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-  local dotdir=$(dirname ${script_dir})
-  if [[ "$HOME" != "$dotdir" ]];then
-    for f in "$dotdir"/.??*; do
-      local base_name
-      base_name=$(basename "$f")
-      [[ "$base_name" == .git* || "$base_name" == ".DS_Store" ]] && continue
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+  local dotdir
+  dotdir=$(dirname ${script_dir})
 
-      local target="$HOME/$base_name"
-      if [[ -L "$target" ]];then
-        command rm -f "$target"
-      elif [[ -e "$target" ]];then
-        command mv "$target" "$HOME/.dotbackup"
-      fi
-      command ln -snf "$f" "$target"
-    done
-    command echo "Symbolic link created"
-  else
+  if [[ "$HOME" != "$dotdir" ]];then
     command echo "Skipped: Source and destination are the same ($HOME)."
+    return
   fi
+
+  for f in "$dotdir"/.??*; do
+    local base_name
+    base_name=$(basename "$f")
+
+    [[ "$base_name" == ".DS_Store" ]] && continue
+
+    if [[ "$base_name" == ".gitconfig" ]]; then
+      _link_file "$f" "$HOME/.gitconfig"
+      continue
+    fi
+
+    if [[ "$base_name" == "config.common" ]]; then
+      local git_config_dir="$HOME/.config/git"
+      command mkdir -p "$git_config_dir"
+      _link_file "$f" "$git_config_dir/config.common"
+      continue
+    fi
+
+    # Skip git related filles/dirs except .gitconfig
+    [[ "$base_name" == .git* ]] && continue
+
+    local target="$HOME/$base_name"
+    if [[ -L "$target" ]];then
+      command rm -f "$target"
+    elif [[ -e "$target" ]];then
+      command mv "$target" "$HOME/.dotbackup"
+    fi
+    command ln -snf "$f" "$target"
+  done
+  command echo "Symbolic link created"
 }
+
+
+function _link_file() {
+  local src="$1"
+  local dst="$2"
+
+  if [[ -L "$dst" ]]; then
+    command rm -f "$dst"
+  elif [[ -e "$dst" ]]; then
+    command mv "$dst" "$HOME/.dotbackup"
+  fi
+  command ln -snf "$src" "$dst"
+}
+
 
 function main() {
   IS_INSTALL="false"
