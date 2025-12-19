@@ -12,6 +12,8 @@
 !/Code/
 !/Code/extensions.txt
 !/Code/User/
+!/.gitconfig
+!/config.common
 !/Code/User/settings.json
 !/.zprofile
 !/.zshrc
